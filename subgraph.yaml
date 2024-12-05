@@ -1,0 +1,41 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: CiphexPresale
+    network: base
+    source:
+      address: "0x34E941cd40a876b9AF278f28e1F11c46113478cE"
+      abi: CiphexPresale
+      startBlock: 23320707
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Bought
+        - Initialized
+        - OwnershipTransferStarted
+        - OwnershipTransferred
+        - PresaleStarted
+        - StatusUpdated
+      abis:
+        - name: CiphexPresale
+          file: ./abis/CiphexPresale.json
+      eventHandlers:
+        - event: Bought(indexed address,indexed address,address,uint256,uint256,uint256,uint256)
+          handler: handleBought
+        - event: Initialized(uint64)
+          handler: handleInitialized
+        - event: OwnershipTransferStarted(indexed address,indexed address)
+          handler: handleOwnershipTransferStarted
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: PresaleStarted(uint256,uint256,uint256)
+          handler: handlePresaleStarted
+        - event: StatusUpdated(address,bool)
+          handler: handleStatusUpdated
+      file: ./src/ciphex-presale.ts
