@@ -1,5 +1,6 @@
-type Bought @entity(immutable: true) {
-  id: Bytes!
+type Bought @entity(immutable: true, timeseries: true) {
+  id: Int8!
+  timestamp: Timestamp!
   recipient: Bytes! # address
   referral: Bytes! # address
   token: Bytes! # address
@@ -7,9 +8,36 @@ type Bought @entity(immutable: true) {
   ciphexAmount: BigInt! # uint256
   ethPrice: BigInt! # uint256
   tokenPrice: BigInt! # uint256
+  usdContribution: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+}
+
+type UserContribution @entity {
+  id: Bytes!
+  totalUsdContribution: BigInt!
+  totalCiphexContribution: BigInt!
+}
+
+type ReferralContribution @entity {
+  id: Bytes!
+  totalUsdContribution: BigInt!
+  totalCiphexContribution: BigInt!
+  totalUsdRewards: BigInt!
+  totalCiphexRewards: BigInt!
+}
+
+type TotalContributions @entity {
+  id: Bytes!
+  totalUsdContribution: BigInt!
+  totalCiphexContribution: BigInt!
+}
+
+type TotalAffiliateRewards @entity {
+  id: Bytes!
+  totalUsdRewards: BigInt!
+  totalCiphexRewards: BigInt!
 }
 
 type Initialized @entity(immutable: true) {

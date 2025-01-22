@@ -1,4 +1,4 @@
-specVersion: 1.0.0
+specVersion: 1.1.0
 indexerHints:
   prune: auto
 schema:
@@ -8,7 +8,7 @@ dataSources:
     name: CiphexPresale
     network: base
     source:
-      address: "0x34E941cd40a876b9AF278f28e1F11c46113478cE"
+      address: "0x3E6A49328c6b1f6e1F0D0305756453189c9b6F6c"
       abi: CiphexPresale
       startBlock: 23320707
     mapping:
@@ -22,6 +22,9 @@ dataSources:
         - OwnershipTransferred
         - PresaleStarted
         - StatusUpdated
+        - UserContribution
+        - ReferralContribution
+        - TotalContributions
       abis:
         - name: CiphexPresale
           file: ./abis/CiphexPresale.json
