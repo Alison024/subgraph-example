@@ -9,21 +9,8 @@ export class Rank {
     this.max = BigDecimal.fromString(max);
     this.rate = BigDecimal.fromString(rate);
   }
-}
-export class Percentage {
-  percentage: BigDecimal;
-  rate: BigDecimal;
-  constructor(percentage: BigDecimal, rate: BigDecimal) {
-    this.percentage = percentage;
-    this.rate = rate;
-  }
-}
-export class AffiliateResult {
-  usdt: BigDecimal;
-  cpx: BigDecimal;
-  constructor(usdt: BigDecimal, cpx: BigDecimal) {
-    this.usdt = usdt;
-    this.cpx = cpx;
+  getResString(): string {
+    return `min = ${this.min.toString()}; max = ${this.max.toString()}; rate = ${this.rate.toString()}`;
   }
 }
 
@@ -49,6 +36,14 @@ ranks.push(new Rank("24000", "45000", "0.12"));
 // rank 10
 ranks.push(new Rank("0", "24000", "0.1"));
 
-export function getRanks(): Rank[] {
-  return ranks;
+export function getRanksLengh(): i32 {
+  return ranks.length;
+}
+
+export function getRank(index: i32): Rank | null {
+  if (index < ranks.length) {
+    return ranks[index];
+  } else {
+    return null;
+  }
 }

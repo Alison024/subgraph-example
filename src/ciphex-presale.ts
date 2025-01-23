@@ -24,11 +24,13 @@ import {
   TotalContributions,
   UserContribution,
 } from "../generated/schema";
-import { AffiliateResult, Percentage, Rank, getRanks } from "./ranks";
+import {} from "./ranks";
+import { log } from "@graphprotocol/graph-ts";
 import {
   calculateReferralRewards,
   tokenDecimals,
   usdDecimals,
+  AffiliateResult,
 } from "./affiliateRewards";
 
 export function handleBought(event: BoughtEvent): void {
@@ -73,6 +75,7 @@ export function handleBought(event: BoughtEvent): void {
   );
   user.save();
 
+  log.info("Before handling ReferralContribution:{}", []);
   // handling ReferralContribution
   if (event.params.referral.notEqual(zeroAddress)) {
     const referralId = event.params.referral;
@@ -84,16 +87,20 @@ export function handleBought(event: BoughtEvent): void {
       referral.totalUsdRewards = BigInt.fromI32(0);
       referral.totalCiphexRewards = BigInt.fromI32(0);
     }
+    log.info("Usercpmtribution usd: {}", [usd.toString()]);
+    log.info("Usercpmtribution cpx: {}", [entity.ciphexAmount.toString()]);
     referral.totalUsdContribution = referral.totalUsdContribution.plus(usd);
     referral.totalCiphexContribution = referral.totalCiphexContribution.plus(
       entity.ciphexAmount
     );
+    log.info("Before calculateReferralRewards execution {}", []);
+
     // handling Referral rewards
     let rewRes: AffiliateResult = calculateReferralRewards(
       referral.totalUsdContribution,
       referral.totalCiphexContribution
     );
-
+    log.info("calculateReferralRewards {}", [rewRes.getResString()]);
     let usdRewDelta: BigInt = BigInt.fromString(rewRes.usdt.toString())
       .times(usdDecimals)
       .minus(referral.totalUsdRewards);
@@ -105,7 +112,7 @@ export function handleBought(event: BoughtEvent): void {
     referral.totalCiphexRewards = BigInt.fromString(rewRes.cpx.toString());
     let totalAffiliateRewards = new TotalAffiliateRewards(zeroAddress);
     if (!totalAffiliateRewards) {
-      totalAffiliateRewards = new TotalAffiliateRewards(referralId);
+      totalAffiliateRewards = new TotalAffiliateRewards(zeroAddress);
       totalAffiliateRewards.totalUsdRewards = BigInt.fromI32(0);
       totalAffiliateRewards.totalCiphexRewards = BigInt.fromI32(0);
     }
@@ -116,6 +123,7 @@ export function handleBought(event: BoughtEvent): void {
     referral.save();
     totalAffiliateRewards.save();
   }
+  log.info("Before handling TotalContributions", []);
 
   // handling TotalContributions
   let totalContributions = TotalContributions.load(zeroAddress);

@@ -1,12 +1,31 @@
 import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
-import { AffiliateResult, getRanks, Percentage, Rank } from "./ranks";
+import { getRanksLengh, getRank, Rank } from "./ranks";
+import { log } from "@graphprotocol/graph-ts";
 export const usdDecimals = new BigInt(1000000);
 export const tokenDecimals = new BigInt(1 * 10 ** 18);
+export class Percentage {
+  percentage: BigDecimal;
+  rate: BigDecimal;
+  constructor(percentage: BigDecimal, rate: BigDecimal) {
+    this.percentage = percentage;
+    this.rate = rate;
+  }
+}
+export class AffiliateResult {
+  usdt: BigDecimal;
+  cpx: BigDecimal;
+  constructor(usdt: BigDecimal, cpx: BigDecimal) {
+    this.usdt = usdt;
+    this.cpx = cpx;
+  }
+  getResString(): string {
+    return `usdt = ${this.usdt.toString()}; cpx = ${this.cpx.toString()}`;
+  }
+}
 export function calculateReferralRewards(
   usdcAmount: BigInt,
   cpxAmount: BigInt
 ): AffiliateResult {
-  const ranks: Rank[] = getRanks().reverse();
   //   let usdDecimals = new BigInt(1000000);
   //   let tokenDecimals = new BigInt(1 * 10 ** 18);
   const zeroBd = BigDecimal.fromString("0");
@@ -16,9 +35,12 @@ export function calculateReferralRewards(
   let total: BigDecimal = new BigDecimal(usdcAmount.div(usdDecimals));
   let usdRewards: BigDecimal = BigDecimal.fromString("0");
   let percentages: Percentage[] = [];
-  for (let i = 0; i < ranks.length; i++) {
+  log.info(`getRanksLengh: {}`, [getRanksLengh().toString()]);
+  for (let i = getRanksLengh() - 1; i >= 0; i++) {
     if (total == zeroBd) break;
-    const rank = ranks[i];
+    const rank: Rank | null = getRank(i);
+    if (!rank) break;
+    log.info(`getRank: data {}, index {}`, [rank.getResString(), i.toString()]);
     // Calculate the maximum amount that can be attributed to this rank
     let bracketMax: BigDecimal;
     // same as const bracketMax = Math.min(rank.max - rank.min + 1, total);
