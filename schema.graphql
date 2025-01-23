@@ -34,12 +34,6 @@ type TotalContributions @entity {
   totalCiphexContribution: BigInt!
 }
 
-type TotalAffiliateRewards @entity {
-  id: Bytes!
-  totalUsdRewards: BigInt!
-  totalCiphexRewards: BigInt!
-}
-
 type Initialized @entity(immutable: true) {
   id: Bytes!
   version: BigInt! # uint64
