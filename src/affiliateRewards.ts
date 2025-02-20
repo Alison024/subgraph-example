@@ -18,9 +18,9 @@ export class AffiliateResult {
     this.usdt = usdt;
     this.cpx = cpx;
   }
-  getResString(): string {
-    return `usdt = ${this.usdt.toString()}; cpx = ${this.cpx.toString()}`;
-  }
+  // getResString(): string {
+  //   return `usdt = ${this.usdt.toString()}; cpx = ${this.cpx.toString()}`;
+  // }
 }
 export function calculateReferralRewards(
   usdcAmount: BigInt,
@@ -35,12 +35,12 @@ export function calculateReferralRewards(
   let total: BigDecimal = new BigDecimal(usdcAmount.div(usdDecimals));
   let usdRewards: BigDecimal = BigDecimal.fromString("0");
   let percentages: Percentage[] = [];
-  log.info(`getRanksLengh: {}`, [getRanksLengh().toString()]);
-  for (let i = getRanksLengh() - 1; i >= 0; i++) {
+  // log.info(`getRanksLengh: {}`, [getRanksLengh().toString()]);
+  for (let i = getRanksLengh() - 1; i >= 0; i--) {
     if (total == zeroBd) break;
     const rank: Rank | null = getRank(i);
     if (!rank) break;
-    log.info(`getRank: data {}, index {}`, [rank.getResString(), i.toString()]);
+    // log.info(`getRank: data {}, index {}`, [rank.getResString(), i.toString()]);
     // Calculate the maximum amount that can be attributed to this rank
     let bracketMax: BigDecimal;
     // same as const bracketMax = Math.min(rank.max - rank.min + 1, total);
