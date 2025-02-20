@@ -1,6 +1,5 @@
 import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { getRanksLengh, getRank, Rank } from "./ranks";
-import { log } from "@graphprotocol/graph-ts";
 export const usdDecimals = new BigInt(1000000);
 export const tokenDecimals = new BigInt(1 * 10 ** 18);
 export class Percentage {
@@ -35,12 +34,13 @@ export function calculateReferralRewards(
   let total: BigDecimal = new BigDecimal(usdcAmount.div(usdDecimals));
   let usdRewards: BigDecimal = BigDecimal.fromString("0");
   let percentages: Percentage[] = [];
-  // log.info(`getRanksLengh: {}`, [getRanksLengh().toString()]);
-  for (let i = getRanksLengh() - 1; i >= 0; i--) {
+  let ranksLength = getRanksLengh();
+  if (ranksLength == 0)
+    return new AffiliateResult(BigDecimal.zero(), BigDecimal.zero());
+  for (let i = ranksLength - 1; i >= 0; i--) {
     if (total == zeroBd) break;
     const rank: Rank | null = getRank(i);
     if (!rank) break;
-    // log.info(`getRank: data {}, index {}`, [rank.getResString(), i.toString()]);
     // Calculate the maximum amount that can be attributed to this rank
     let bracketMax: BigDecimal;
     // same as const bracketMax = Math.min(rank.max - rank.min + 1, total);

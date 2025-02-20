@@ -74,7 +74,6 @@ export function handleBought(event: BoughtEvent): void {
   );
   user.save();
 
-  // log.info("Before handling ReferralContribution:{}", []);
   // handling ReferralContribution
   if (event.params.referral.notEqual(zeroAddress)) {
     const referralId = event.params.referral;
@@ -86,29 +85,33 @@ export function handleBought(event: BoughtEvent): void {
       referral.totalUsdRewards = BigInt.fromI32(0);
       referral.totalCiphexRewards = BigInt.fromI32(0);
     }
-    // log.info("Usercpmtribution usd: {}", [usd.toString()]);
-    // log.info("Usercpmtribution cpx: {}", [entity.ciphexAmount.toString()]);
     referral.totalUsdContribution = referral.totalUsdContribution.plus(usd);
     referral.totalCiphexContribution = referral.totalCiphexContribution.plus(
       entity.ciphexAmount
     );
-    // log.info("Before calculateReferralRewards execution {}", []);
 
     // handling Referral rewards
     let rewRes: AffiliateResult = calculateReferralRewards(
       referral.totalUsdContribution,
       referral.totalCiphexContribution
     );
-    // log.info("calculateReferralRewards {}", [rewRes.getResString()]);
-    let usdRewDelta: BigInt = BigInt.fromString(rewRes.usdt.toString())
+    let usdRewDelta: BigInt = BigInt.fromString(
+      rewRes.usdt.truncate(0).toString()
+    )
       .times(usdDecimals)
       .minus(referral.totalUsdRewards);
-    let cpxRewDelta: BigInt = BigInt.fromString(rewRes.cpx.toString())
+    let cpxRewDelta: BigInt = BigInt.fromString(
+      rewRes.cpx.truncate(0).toString()
+    )
       .times(tokenDecimals)
       .minus(referral.totalCiphexRewards);
 
-    referral.totalUsdRewards = BigInt.fromString(rewRes.usdt.toString());
-    referral.totalCiphexRewards = BigInt.fromString(rewRes.cpx.toString());
+    referral.totalUsdRewards = BigInt.fromString(
+      rewRes.usdt.truncate(0).toString()
+    );
+    referral.totalCiphexRewards = BigInt.fromString(
+      rewRes.cpx.truncate(0).toString()
+    );
     let totalAffiliateRewards = new TotalAffiliateRewards(zeroAddress);
     if (!totalAffiliateRewards) {
       totalAffiliateRewards = new TotalAffiliateRewards(zeroAddress);
@@ -122,7 +125,6 @@ export function handleBought(event: BoughtEvent): void {
     referral.save();
     totalAffiliateRewards.save();
   }
-  // log.info("Before handling TotalContributions", []);
 
   // handling TotalContributions
   let totalContributions = TotalContributions.load(zeroAddress);

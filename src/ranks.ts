@@ -9,9 +9,6 @@ export class Rank {
     this.max = BigDecimal.fromString(max);
     this.rate = BigDecimal.fromString(rate);
   }
-  // getResString(): string {
-  //   return `min = ${this.min.toString()}; max = ${this.max.toString()}; rate = ${this.rate.toString()}`;
-  // }
 }
 
 export let ranks: Rank[] = [];
