@@ -3,6 +3,7 @@ import {
   bigDecimal,
   BigDecimal,
   BigInt,
+  log,
 } from "@graphprotocol/graph-ts";
 import {
   Bought as BoughtEvent,
@@ -24,8 +25,6 @@ import {
   TotalContributions,
   UserContribution,
 } from "../generated/schema";
-import {} from "./ranks";
-import { log } from "@graphprotocol/graph-ts";
 import {
   calculateReferralRewards,
   tokenDecimals,
@@ -75,7 +74,7 @@ export function handleBought(event: BoughtEvent): void {
   );
   user.save();
 
-  log.info("Before handling ReferralContribution:{}", []);
+  // log.info("Before handling ReferralContribution:{}", []);
   // handling ReferralContribution
   if (event.params.referral.notEqual(zeroAddress)) {
     const referralId = event.params.referral;
@@ -87,20 +86,20 @@ export function handleBought(event: BoughtEvent): void {
       referral.totalUsdRewards = BigInt.fromI32(0);
       referral.totalCiphexRewards = BigInt.fromI32(0);
     }
-    log.info("Usercpmtribution usd: {}", [usd.toString()]);
-    log.info("Usercpmtribution cpx: {}", [entity.ciphexAmount.toString()]);
+    // log.info("Usercpmtribution usd: {}", [usd.toString()]);
+    // log.info("Usercpmtribution cpx: {}", [entity.ciphexAmount.toString()]);
     referral.totalUsdContribution = referral.totalUsdContribution.plus(usd);
     referral.totalCiphexContribution = referral.totalCiphexContribution.plus(
       entity.ciphexAmount
     );
-    log.info("Before calculateReferralRewards execution {}", []);
+    // log.info("Before calculateReferralRewards execution {}", []);
 
     // handling Referral rewards
     let rewRes: AffiliateResult = calculateReferralRewards(
       referral.totalUsdContribution,
       referral.totalCiphexContribution
     );
-    log.info("calculateReferralRewards {}", [rewRes.getResString()]);
+    // log.info("calculateReferralRewards {}", [rewRes.getResString()]);
     let usdRewDelta: BigInt = BigInt.fromString(rewRes.usdt.toString())
       .times(usdDecimals)
       .minus(referral.totalUsdRewards);
@@ -123,7 +122,7 @@ export function handleBought(event: BoughtEvent): void {
     referral.save();
     totalAffiliateRewards.save();
   }
-  log.info("Before handling TotalContributions", []);
+  // log.info("Before handling TotalContributions", []);
 
   // handling TotalContributions
   let totalContributions = TotalContributions.load(zeroAddress);
