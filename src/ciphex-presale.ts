@@ -91,7 +91,7 @@ export function handleBought(event: BoughtEvent): void {
       entity.ciphexAmount
     );
 
-    log.info("Before calculateReferralRewards", []);
+    /* log.info("Before calculateReferralRewards", []);
     // handling Referral rewards
     let rewRes: AffiliateResult = calculateReferralRewards(
       referral.totalUsdContribution,
@@ -114,7 +114,7 @@ export function handleBought(event: BoughtEvent): void {
     );
     referral.totalCiphexRewards = BigInt.fromString(
       rewRes.cpx.truncate(0).toString()
-    );
+    ); */
     log.info("After updating total rewards", []);
     let totalAffiliateRewards = new TotalAffiliateRewards(zeroAddress);
     if (!totalAffiliateRewards) {
@@ -122,10 +122,10 @@ export function handleBought(event: BoughtEvent): void {
       totalAffiliateRewards.totalUsdRewards = BigInt.fromI32(0);
       totalAffiliateRewards.totalCiphexRewards = BigInt.fromI32(0);
     }
-    totalAffiliateRewards.totalUsdRewards =
-      totalAffiliateRewards.totalUsdRewards.plus(usdRewDelta);
-    totalAffiliateRewards.totalCiphexRewards =
-      totalAffiliateRewards.totalCiphexRewards.plus(cpxRewDelta);
+    // totalAffiliateRewards.totalUsdRewards =
+    //   totalAffiliateRewards.totalUsdRewards.plus(usdRewDelta);
+    // totalAffiliateRewards.totalCiphexRewards =
+    //   totalAffiliateRewards.totalCiphexRewards.plus(cpxRewDelta);
     referral.save();
     totalAffiliateRewards.save();
   }

@@ -13,25 +13,25 @@ export class Rank {
 
 export let ranks: Rank[] = [];
 // rank 1, zero means Infinity
-ranks.push(new Rank("650000", "0", "0.3"));
+ranks.push(new Rank("650000", "0", "300"));
 // rank 2
-ranks.push(new Rank("490000", "650000", "0.26"));
+ranks.push(new Rank("490000", "650000", "260"));
 // rank 3
-ranks.push(new Rank("350000", "490000", "0.24"));
+ranks.push(new Rank("350000", "490000", "240"));
 // rank 4
-ranks.push(new Rank("250000", "350000", "0.22"));
+ranks.push(new Rank("250000", "350000", "220"));
 // rank 5
-ranks.push(new Rank("175000", "250000", "0.2"));
+ranks.push(new Rank("175000", "250000", "200"));
 // rank 6
-ranks.push(new Rank("115000", "175000", "0.18"));
+ranks.push(new Rank("115000", "175000", "180"));
 // rank 7
-ranks.push(new Rank("75000", "115000", "0.16"));
+ranks.push(new Rank("75000", "115000", "160"));
 // rank 8
-ranks.push(new Rank("45000", "75000", "0.14"));
+ranks.push(new Rank("45000", "75000", "140"));
 // rank 9
-ranks.push(new Rank("24000", "45000", "0.12"));
+ranks.push(new Rank("24000", "45000", "120"));
 // rank 10
-ranks.push(new Rank("0", "24000", "0.1"));
+ranks.push(new Rank("0", "24000", "100"));
 
 export function getRanksLengh(): i32 {
   return ranks.length;
